@@ -1,0 +1,517 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="fr">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>package pkg_Engine;<a name="line.1"></a>
+<span class="sourceLineNo">002</span>import pkg_Command.Parser;<a name="line.2"></a>
+<span class="sourceLineNo">003</span>import pkg_Command.Command;<a name="line.3"></a>
+<span class="sourceLineNo">004</span>import pkg_Componnants.Player;<a name="line.4"></a>
+<span class="sourceLineNo">005</span>import pkg_Componnants.Map;<a name="line.5"></a>
+<span class="sourceLineNo">006</span>import pkg_Componnants.Player;<a name="line.6"></a>
+<span class="sourceLineNo">007</span>import pkg_Componnants.NPC;<a name="line.7"></a>
+<span class="sourceLineNo">008</span><a name="line.8"></a>
+<span class="sourceLineNo">009</span>import java.util.Stack;<a name="line.9"></a>
+<span class="sourceLineNo">010</span>import java.util.Scanner;<a name="line.10"></a>
+<span class="sourceLineNo">011</span>import java.io.File;<a name="line.11"></a>
+<span class="sourceLineNo">012</span>import java.io.FileNotFoundException;<a name="line.12"></a>
+<span class="sourceLineNo">013</span>import java.util.ArrayList;<a name="line.13"></a>
+<span class="sourceLineNo">014</span>/**<a name="line.14"></a>
+<span class="sourceLineNo">015</span> *  This class is part of the "World of Zuul" application. <a name="line.15"></a>
+<span class="sourceLineNo">016</span> *  "World of Zuul" is a very simple, text based adventure game.<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * <a name="line.17"></a>
+<span class="sourceLineNo">018</span> *  This class creates all rooms, creates the parser and starts<a name="line.18"></a>
+<span class="sourceLineNo">019</span> *  the game.  It also evaluates and executes the commands that <a name="line.19"></a>
+<span class="sourceLineNo">020</span> *  the parser returns.<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * <a name="line.21"></a>
+<span class="sourceLineNo">022</span> * @author  Michael Kolling and David J. Barnes<a name="line.22"></a>
+<span class="sourceLineNo">023</span> * @version 1.0 (Jan 2003)<a name="line.23"></a>
+<span class="sourceLineNo">024</span> */<a name="line.24"></a>
+<span class="sourceLineNo">025</span>public class GameEngine<a name="line.25"></a>
+<span class="sourceLineNo">026</span>{<a name="line.26"></a>
+<span class="sourceLineNo">027</span>    private Parser aParser;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>    private Player aPlayer;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>    private UserInterface aGui;<a name="line.29"></a>
+<span class="sourceLineNo">030</span>    private Map aMap ;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>    private boolean aTest = false;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>    private boolean aCombat = false;<a name="line.32"></a>
+<span class="sourceLineNo">033</span>    private NPC aEnnemi = null;<a name="line.33"></a>
+<span class="sourceLineNo">034</span>    <a name="line.34"></a>
+<span class="sourceLineNo">035</span>    /**<a name="line.35"></a>
+<span class="sourceLineNo">036</span>     * Constructeur, cree un nouveau GameEngine.<a name="line.36"></a>
+<span class="sourceLineNo">037</span>     */<a name="line.37"></a>
+<span class="sourceLineNo">038</span>    public GameEngine()<a name="line.38"></a>
+<span class="sourceLineNo">039</span>    {<a name="line.39"></a>
+<span class="sourceLineNo">040</span>        this.aParser = new Parser();<a name="line.40"></a>
+<span class="sourceLineNo">041</span>        this.aMap = new Map();<a name="line.41"></a>
+<span class="sourceLineNo">042</span>        this.aPlayer = new Player(aMap.get(0));<a name="line.42"></a>
+<span class="sourceLineNo">043</span>    }<a name="line.43"></a>
+<span class="sourceLineNo">044</span><a name="line.44"></a>
+<span class="sourceLineNo">045</span>    /**<a name="line.45"></a>
+<span class="sourceLineNo">046</span>     * Cree un nouveau GUI.<a name="line.46"></a>
+<span class="sourceLineNo">047</span>     * @param userInterface le userInterface cree auparavant.<a name="line.47"></a>
+<span class="sourceLineNo">048</span>     */<a name="line.48"></a>
+<span class="sourceLineNo">049</span>    public void setGUI(UserInterface userInterface)<a name="line.49"></a>
+<span class="sourceLineNo">050</span>    {<a name="line.50"></a>
+<span class="sourceLineNo">051</span>        this.aGui = userInterface;<a name="line.51"></a>
+<span class="sourceLineNo">052</span>        this.printStart();<a name="line.52"></a>
+<span class="sourceLineNo">053</span>    }<a name="line.53"></a>
+<span class="sourceLineNo">054</span><a name="line.54"></a>
+<span class="sourceLineNo">055</span>    /**<a name="line.55"></a>
+<span class="sourceLineNo">056</span>     * Affiche un message d'instruction pour choisir sa race puis sa classe.<a name="line.56"></a>
+<span class="sourceLineNo">057</span>     */<a name="line.57"></a>
+<span class="sourceLineNo">058</span>    private void printStart()<a name="line.58"></a>
+<span class="sourceLineNo">059</span>    {<a name="line.59"></a>
+<span class="sourceLineNo">060</span>        this.aGui.print("\n");<a name="line.60"></a>
+<span class="sourceLineNo">061</span>        this.aGui.println("You are going to define yourself,");<a name="line.61"></a>
+<span class="sourceLineNo">062</span>        this.aGui.println("theses choises will impact your abilities.");<a name="line.62"></a>
+<span class="sourceLineNo">063</span>        this.aGui.println("So, choose carefully...\n");<a name="line.63"></a>
+<span class="sourceLineNo">064</span>        this.aGui.println("Please, choose a race.");<a name="line.64"></a>
+<span class="sourceLineNo">065</span>        this.aGui.showImage("Images/race.png");<a name="line.65"></a>
+<span class="sourceLineNo">066</span>    }<a name="line.66"></a>
+<span class="sourceLineNo">067</span>    <a name="line.67"></a>
+<span class="sourceLineNo">068</span>    /**<a name="line.68"></a>
+<span class="sourceLineNo">069</span>     * Affiche le message de "bienvenue".<a name="line.69"></a>
+<span class="sourceLineNo">070</span>     */<a name="line.70"></a>
+<span class="sourceLineNo">071</span>    public void printWelcome()<a name="line.71"></a>
+<span class="sourceLineNo">072</span>    {<a name="line.72"></a>
+<span class="sourceLineNo">073</span>        this.aGui.println(this.aPlayer.stats());<a name="line.73"></a>
+<span class="sourceLineNo">074</span>        this.aGui.print("\n");<a name="line.74"></a>
+<span class="sourceLineNo">075</span>        this.aGui.println("You are an adventurer with neither fame nor name. ");<a name="line.75"></a>
+<span class="sourceLineNo">076</span>        this.aGui.println("Thus, you accepted a quest from an old wizard.");<a name="line.76"></a>
+<span class="sourceLineNo">077</span>        this.aGui.println("You have to retrieve the encient artifact : \n  the statuette of Anbrodema.\n");<a name="line.77"></a>
+<span class="sourceLineNo">078</span>        this.aGui.println("Legends tell that it is hidden in the depths \n  of the malicious dungeon of Xaar-Sharoth ! ");<a name="line.78"></a>
+<span class="sourceLineNo">079</span>        this.aGui.println("Your legend starts here and now !");<a name="line.79"></a>
+<span class="sourceLineNo">080</span>        this.aGui.println("\n  Type 'help' if you need help.");<a name="line.80"></a>
+<span class="sourceLineNo">081</span>        this.aGui.print("\n");<a name="line.81"></a>
+<span class="sourceLineNo">082</span>        this.printLocationInfo();<a name="line.82"></a>
+<span class="sourceLineNo">083</span>        this.aGui.showImage(this.aPlayer.getImage());<a name="line.83"></a>
+<span class="sourceLineNo">084</span>        this.aGui.println(this.aMap.getNumRoom());<a name="line.84"></a>
+<span class="sourceLineNo">085</span>    }<a name="line.85"></a>
+<span class="sourceLineNo">086</span>    <a name="line.86"></a>
+<span class="sourceLineNo">087</span>    /**<a name="line.87"></a>
+<span class="sourceLineNo">088</span>     * Recupere les information sur la aCurrentRoom et les affiche.<a name="line.88"></a>
+<span class="sourceLineNo">089</span>     */<a name="line.89"></a>
+<span class="sourceLineNo">090</span>    public void printLocationInfo()<a name="line.90"></a>
+<span class="sourceLineNo">091</span>    {<a name="line.91"></a>
+<span class="sourceLineNo">092</span>        this.aGui.println(this.aPlayer.getLocationInfo());<a name="line.92"></a>
+<span class="sourceLineNo">093</span>    }//printLocationInfo()<a name="line.93"></a>
+<span class="sourceLineNo">094</span>    <a name="line.94"></a>
+<span class="sourceLineNo">095</span>    /**<a name="line.95"></a>
+<span class="sourceLineNo">096</span>     * Avec une commande donnee, l'execute.<a name="line.96"></a>
+<span class="sourceLineNo">097</span>     * si cette commande finis le jeu, retourne true, sinon retourne false.<a name="line.97"></a>
+<span class="sourceLineNo">098</span>     * @param pCommandLine le string correspondant a la commande.<a name="line.98"></a>
+<span class="sourceLineNo">099</span>     */<a name="line.99"></a>
+<span class="sourceLineNo">100</span>    public void interpretCommand(String pCommandLine) <a name="line.100"></a>
+<span class="sourceLineNo">101</span>    {<a name="line.101"></a>
+<span class="sourceLineNo">102</span>        this.aGui.println(pCommandLine);<a name="line.102"></a>
+<span class="sourceLineNo">103</span>        Command vCommand = this.aParser.getCommand(pCommandLine);<a name="line.103"></a>
+<span class="sourceLineNo">104</span>        if(vCommand == null) {<a name="line.104"></a>
+<span class="sourceLineNo">105</span>            this.aGui.println("I don't know what you mean...");<a name="line.105"></a>
+<span class="sourceLineNo">106</span>        } <a name="line.106"></a>
+<span class="sourceLineNo">107</span>        else {<a name="line.107"></a>
+<span class="sourceLineNo">108</span>            vCommand.execute(this);<a name="line.108"></a>
+<span class="sourceLineNo">109</span>        }<a name="line.109"></a>
+<span class="sourceLineNo">110</span>    }<a name="line.110"></a>
+<span class="sourceLineNo">111</span>    <a name="line.111"></a>
+<span class="sourceLineNo">112</span>    /**<a name="line.112"></a>
+<span class="sourceLineNo">113</span>     * Certaines Rooms ayant des actions a effectuer<a name="line.113"></a>
+<span class="sourceLineNo">114</span>     * (baisser la defence, baisser les PVs, afficher les statistiques du Player, lancer un combat, ...)<a name="line.114"></a>
+<span class="sourceLineNo">115</span>     * Ces actions sont faites ici.<a name="line.115"></a>
+<span class="sourceLineNo">116</span>     */<a name="line.116"></a>
+<span class="sourceLineNo">117</span>    public void RoomAction()<a name="line.117"></a>
+<span class="sourceLineNo">118</span>    {<a name="line.118"></a>
+<span class="sourceLineNo">119</span>        int vTypeRoom = this.aPlayer.getRoomType();<a name="line.119"></a>
+<span class="sourceLineNo">120</span>        if(this.aPlayer.getNbRoomChickenized() == 5)<a name="line.120"></a>
+<span class="sourceLineNo">121</span>        {<a name="line.121"></a>
+<span class="sourceLineNo">122</span>            this.aPlayer.attribuerStats();<a name="line.122"></a>
+<span class="sourceLineNo">123</span>            this.aPlayer.reequip();<a name="line.123"></a>
+<span class="sourceLineNo">124</span>            this.aPlayer.resetNbRoomChickenized();<a name="line.124"></a>
+<span class="sourceLineNo">125</span>            this.aPlayer.setChickenized(false);<a name="line.125"></a>
+<span class="sourceLineNo">126</span>            this.aGui.println("You recovered from the chickenizing spell.");<a name="line.126"></a>
+<span class="sourceLineNo">127</span>        }<a name="line.127"></a>
+<span class="sourceLineNo">128</span>        if(aMap.getMovingNPC()!=null &amp;&amp; aMap.getMovingNPC().getCurrentRoom().getType()==20)<a name="line.128"></a>
+<span class="sourceLineNo">129</span>        {<a name="line.129"></a>
+<span class="sourceLineNo">130</span>            if(aMap.getMovingNPC().getCurrentRoom().getNPC("Chicken")!=null)<a name="line.130"></a>
+<span class="sourceLineNo">131</span>            {<a name="line.131"></a>
+<span class="sourceLineNo">132</span>                int aNbRand = (int)Math.floor(Math.random()*21);<a name="line.132"></a>
+<span class="sourceLineNo">133</span>                if(aNbRand&gt;= 15)<a name="line.133"></a>
+<span class="sourceLineNo">134</span>                {<a name="line.134"></a>
+<span class="sourceLineNo">135</span>                    this.aMap.getMovingNPC().getCurrentRoom().getNPC("Chicken").changePV(12);<a name="line.135"></a>
+<span class="sourceLineNo">136</span>                    this.aMap.getMovingNPC().getCurrentRoom().getNPC("Chicken").changeDef(12);<a name="line.136"></a>
+<span class="sourceLineNo">137</span>                    this.aMap.getMovingNPC().getCurrentRoom().getNPC("Chicken").changeAgi(12);<a name="line.137"></a>
+<span class="sourceLineNo">138</span>                    this.aMap.getMovingNPC().getCurrentRoom().getNPC("Chicken").changeAtt(12);<a name="line.138"></a>
+<span class="sourceLineNo">139</span>                    this.aMap.getMovingNPC().getCurrentRoom().getNPC("Chicken").setImage("Images/dovhaPoulet.png");<a name="line.139"></a>
+<span class="sourceLineNo">140</span>                    this.aMap.getMovingNPC().getCurrentRoom().getNPC("Chicken").setNom("Dovah-Chicken");<a name="line.140"></a>
+<span class="sourceLineNo">141</span>                    this.aMap.getMovingNPC().getCurrentRoom().removeMovingNPC();<a name="line.141"></a>
+<span class="sourceLineNo">142</span>                    this.aGui.println("You hear a frightful roar somewhere in the dungeon." );<a name="line.142"></a>
+<span class="sourceLineNo">143</span>                }<a name="line.143"></a>
+<span class="sourceLineNo">144</span>                else<a name="line.144"></a>
+<span class="sourceLineNo">145</span>                    this.aGui.println("burp" );<a name="line.145"></a>
+<span class="sourceLineNo">146</span>            }<a name="line.146"></a>
+<span class="sourceLineNo">147</span>        }<a name="line.147"></a>
+<span class="sourceLineNo">148</span>        switch(vTypeRoom)<a name="line.148"></a>
+<span class="sourceLineNo">149</span>        {<a name="line.149"></a>
+<span class="sourceLineNo">150</span>            case 2 : <a name="line.150"></a>
+<span class="sourceLineNo">151</span>                this.aGui.println("Suddenly, a wizard appears before you.");<a name="line.151"></a>
+<span class="sourceLineNo">152</span>                int aNbRand = (int)Math.floor(Math.random()*4+1);<a name="line.152"></a>
+<span class="sourceLineNo">153</span>                if (aNbRand == 1)<a name="line.153"></a>
+<span class="sourceLineNo">154</span>                {<a name="line.154"></a>
+<span class="sourceLineNo">155</span>                   this.aGui.println("It's a black wizard, you're now cursed.");<a name="line.155"></a>
+<span class="sourceLineNo">156</span>                   this.aPlayer.changeDef(-2);<a name="line.156"></a>
+<span class="sourceLineNo">157</span>                }<a name="line.157"></a>
+<span class="sourceLineNo">158</span>                else if(aNbRand == 2)<a name="line.158"></a>
+<span class="sourceLineNo">159</span>                {<a name="line.159"></a>
+<span class="sourceLineNo">160</span>                   this.aGui.println("It's a pyromancer, he throws a fireball at you.");<a name="line.160"></a>
+<span class="sourceLineNo">161</span>                   this.aPlayer.changePV(-5);<a name="line.161"></a>
+<span class="sourceLineNo">162</span>                   this.zeroPV();<a name="line.162"></a>
+<span class="sourceLineNo">163</span>                }<a name="line.163"></a>
+<span class="sourceLineNo">164</span>                else if(aNbRand == 3)<a name="line.164"></a>
+<span class="sourceLineNo">165</span>                {<a name="line.165"></a>
+<span class="sourceLineNo">166</span>                   this.aGui.println("It's a light wizard, you're now blessed.");<a name="line.166"></a>
+<span class="sourceLineNo">167</span>                   this.aPlayer.changeDef(+2);<a name="line.167"></a>
+<span class="sourceLineNo">168</span>                }<a name="line.168"></a>
+<span class="sourceLineNo">169</span>                else <a name="line.169"></a>
+<span class="sourceLineNo">170</span>                {<a name="line.170"></a>
+<span class="sourceLineNo">171</span>                   this.aGui.println("It's a necromancer, the dead bodies that where laying around attack you.");<a name="line.171"></a>
+<span class="sourceLineNo">172</span>                   String[] vTabDial = {"Kak kakak kak."};<a name="line.172"></a>
+<span class="sourceLineNo">173</span>                   this.demarrerCombat( new NPC("Skeleton", "Images/skeleton.jpg", vTabDial, "drakeïde", "assassin") );<a name="line.173"></a>
+<span class="sourceLineNo">174</span>                   this.aGui.setFlee(false);<a name="line.174"></a>
+<span class="sourceLineNo">175</span>                }<a name="line.175"></a>
+<span class="sourceLineNo">176</span>                this.aGui.println("");<a name="line.176"></a>
+<span class="sourceLineNo">177</span>                    break;<a name="line.177"></a>
+<span class="sourceLineNo">178</span>            case 3 :<a name="line.178"></a>
+<span class="sourceLineNo">179</span>                this.aGui.println(this.aPlayer.stats());<a name="line.179"></a>
+<span class="sourceLineNo">180</span>                    break;<a name="line.180"></a>
+<span class="sourceLineNo">181</span>            case 4 :<a name="line.181"></a>
+<span class="sourceLineNo">182</span>                 if(aPlayer.getNPC("Adventurer")!=null)<a name="line.182"></a>
+<span class="sourceLineNo">183</span>                    if(aPlayer.getNPCMessage("Adventurer").equals("Death !"))<a name="line.183"></a>
+<span class="sourceLineNo">184</span>                        this.demarrerCombat(this.aPlayer.getNPC("Adventurer"));   <a name="line.184"></a>
+<span class="sourceLineNo">185</span>                    break;     <a name="line.185"></a>
+<span class="sourceLineNo">186</span>            case 12 : <a name="line.186"></a>
+<span class="sourceLineNo">187</span>                if(aPlayer.getNPC("Horde of zombies")!=null)<a name="line.187"></a>
+<span class="sourceLineNo">188</span>                    this.demarrerCombat(this.aPlayer.getNPC("Horde of zombies")); <a name="line.188"></a>
+<span class="sourceLineNo">189</span>                    break;<a name="line.189"></a>
+<span class="sourceLineNo">190</span>            case 13 : <a name="line.190"></a>
+<span class="sourceLineNo">191</span>                double AgiPlayer = Math.floor(Math.random()*21);<a name="line.191"></a>
+<span class="sourceLineNo">192</span>                double AgiFleche = Math.floor(Math.random()*21);<a name="line.192"></a>
+<span class="sourceLineNo">193</span>                if(this.aPlayer.getAgi() &lt;= 0) <a name="line.193"></a>
+<span class="sourceLineNo">194</span>                    this.death("You took an arrow in the knee and died on the move.");<a name="line.194"></a>
+<span class="sourceLineNo">195</span>                else if(this.aPlayer.getAgi() + AgiPlayer &lt;= 15 + AgiFleche)<a name="line.195"></a>
+<span class="sourceLineNo">196</span>                {<a name="line.196"></a>
+<span class="sourceLineNo">197</span>                    this.aGui.println("You took an arrow in the back.\n");<a name="line.197"></a>
+<span class="sourceLineNo">198</span>                    this.aPlayer.changePV(-2);<a name="line.198"></a>
+<span class="sourceLineNo">199</span>                    this.aPlayer.changeAgi(-1);<a name="line.199"></a>
+<span class="sourceLineNo">200</span>                }<a name="line.200"></a>
+<span class="sourceLineNo">201</span>                else<a name="line.201"></a>
+<span class="sourceLineNo">202</span>                {<a name="line.202"></a>
+<span class="sourceLineNo">203</span>                    this.aGui.println("You dodged the arrow that were thrown at your back.\n");<a name="line.203"></a>
+<span class="sourceLineNo">204</span>                    this.aPlayer.changeAgi(-1);<a name="line.204"></a>
+<span class="sourceLineNo">205</span>                }<a name="line.205"></a>
+<span class="sourceLineNo">206</span>                    break;<a name="line.206"></a>
+<span class="sourceLineNo">207</span>            case 14 : <a name="line.207"></a>
+<span class="sourceLineNo">208</span>                if(!aTest)<a name="line.208"></a>
+<span class="sourceLineNo">209</span>                {<a name="line.209"></a>
+<span class="sourceLineNo">210</span>                    this.aPlayer.attribuerStats();<a name="line.210"></a>
+<span class="sourceLineNo">211</span>                    this.aPlayer.reequip();<a name="line.211"></a>
+<span class="sourceLineNo">212</span>                    this.aGui.println("After drinking at the fountain, you feel the energy regaining your body.\n");<a name="line.212"></a>
+<span class="sourceLineNo">213</span>                }<a name="line.213"></a>
+<span class="sourceLineNo">214</span>                    break;<a name="line.214"></a>
+<span class="sourceLineNo">215</span>            case 15 : <a name="line.215"></a>
+<span class="sourceLineNo">216</span>                AgiPlayer = Math.floor(Math.random()*21);<a name="line.216"></a>
+<span class="sourceLineNo">217</span>                AgiFleche = Math.floor(Math.random()*21);<a name="line.217"></a>
+<span class="sourceLineNo">218</span>                if(this.aPlayer.getAgi() &lt;= 0) <a name="line.218"></a>
+<span class="sourceLineNo">219</span>                    this.death("You fell into a pit full of spikes and died on the spot.");<a name="line.219"></a>
+<span class="sourceLineNo">220</span>                else if(this.aPlayer.getAgi() + AgiPlayer &lt;= 10 + AgiFleche)<a name="line.220"></a>
+<span class="sourceLineNo">221</span>                {<a name="line.221"></a>
+<span class="sourceLineNo">222</span>                    this.aGui.println("You fell into a pit full of spikes but grabbed the edge at the last second,\n  you just suffer from a flesh wound.\n");<a name="line.222"></a>
+<span class="sourceLineNo">223</span>                    this.aPlayer.changePV(-4);<a name="line.223"></a>
+<span class="sourceLineNo">224</span>                    this.aPlayer.changeAgi(-1);<a name="line.224"></a>
+<span class="sourceLineNo">225</span>                }<a name="line.225"></a>
+<span class="sourceLineNo">226</span>                else<a name="line.226"></a>
+<span class="sourceLineNo">227</span>                {<a name="line.227"></a>
+<span class="sourceLineNo">228</span>                    this.aGui.println("Just before falling into a pit full of spikes, you stopped your move.\n");<a name="line.228"></a>
+<span class="sourceLineNo">229</span>                    this.aPlayer.changeAgi(-1);<a name="line.229"></a>
+<span class="sourceLineNo">230</span>                }<a name="line.230"></a>
+<span class="sourceLineNo">231</span>                    break;<a name="line.231"></a>
+<span class="sourceLineNo">232</span>            case 16 : <a name="line.232"></a>
+<span class="sourceLineNo">233</span>                if(aPlayer.getNPC("Giant toad")!=null)<a name="line.233"></a>
+<span class="sourceLineNo">234</span>                    this.demarrerCombat(this.aPlayer.getNPC("Giant toad")); <a name="line.234"></a>
+<span class="sourceLineNo">235</span>                    break;<a name="line.235"></a>
+<span class="sourceLineNo">236</span>            case 17 : <a name="line.236"></a>
+<span class="sourceLineNo">237</span>                if(aPlayer.getNPC("Fatal Scythe")!=null)<a name="line.237"></a>
+<span class="sourceLineNo">238</span>                {<a name="line.238"></a>
+<span class="sourceLineNo">239</span>                    this.demarrerCombat(this.aPlayer.getNPC("Fatal Scythe")); <a name="line.239"></a>
+<span class="sourceLineNo">240</span>                    this.aGui.setFlee(false);<a name="line.240"></a>
+<span class="sourceLineNo">241</span>                }<a name="line.241"></a>
+<span class="sourceLineNo">242</span>                    break;<a name="line.242"></a>
+<span class="sourceLineNo">243</span>            case 18 : <a name="line.243"></a>
+<span class="sourceLineNo">244</span>                if(aPlayer.getNPC("Mounted chicken")!=null)<a name="line.244"></a>
+<span class="sourceLineNo">245</span>                {<a name="line.245"></a>
+<span class="sourceLineNo">246</span>                    this.demarrerCombat(this.aPlayer.getNPC("Mounted chicken")); <a name="line.246"></a>
+<span class="sourceLineNo">247</span>                }<a name="line.247"></a>
+<span class="sourceLineNo">248</span>                    break;<a name="line.248"></a>
+<span class="sourceLineNo">249</span>            case 19 : <a name="line.249"></a>
+<span class="sourceLineNo">250</span>                if(!this.aPlayer.chickenized() &amp;&amp; !aTest)<a name="line.250"></a>
+<span class="sourceLineNo">251</span>                {<a name="line.251"></a>
+<span class="sourceLineNo">252</span>                    this.aPlayer.setChickenized(true);<a name="line.252"></a>
+<span class="sourceLineNo">253</span>                    this.aPlayer.setPV(2);<a name="line.253"></a>
+<span class="sourceLineNo">254</span>                    this.aPlayer.setAgi(2);<a name="line.254"></a>
+<span class="sourceLineNo">255</span>                    this.aPlayer.setDef(2);<a name="line.255"></a>
+<span class="sourceLineNo">256</span>                    this.aPlayer.setAtt(2);<a name="line.256"></a>
+<span class="sourceLineNo">257</span>                    this.aGui.println("You have been transformed into a chicken by a magic rune.\n");<a name="line.257"></a>
+<span class="sourceLineNo">258</span>                }<a name="line.258"></a>
+<span class="sourceLineNo">259</span>                    break;<a name="line.259"></a>
+<span class="sourceLineNo">260</span>            case 20 : <a name="line.260"></a>
+<span class="sourceLineNo">261</span>                if(aPlayer.getNPC("Chicken")!=null)<a name="line.261"></a>
+<span class="sourceLineNo">262</span>                {<a name="line.262"></a>
+<span class="sourceLineNo">263</span>                    this.demarrerCombat(this.aPlayer.getNPC("Chicken")); <a name="line.263"></a>
+<span class="sourceLineNo">264</span>                }<a name="line.264"></a>
+<span class="sourceLineNo">265</span>                else if(aPlayer.getNPC("Dovah-Chicken")!=null)<a name="line.265"></a>
+<span class="sourceLineNo">266</span>                {<a name="line.266"></a>
+<span class="sourceLineNo">267</span>                    this.demarrerCombat(this.aPlayer.getNPC("Dovah-Chicken")); <a name="line.267"></a>
+<span class="sourceLineNo">268</span>                }<a name="line.268"></a>
+<span class="sourceLineNo">269</span>                    break;<a name="line.269"></a>
+<span class="sourceLineNo">270</span>        }<a name="line.270"></a>
+<span class="sourceLineNo">271</span>    }<a name="line.271"></a>
+<span class="sourceLineNo">272</span>    <a name="line.272"></a>
+<span class="sourceLineNo">273</span>    /**<a name="line.273"></a>
+<span class="sourceLineNo">274</span>     * Lancer le combat contre le dragon (MovingCharacter)<a name="line.274"></a>
+<span class="sourceLineNo">275</span>     */<a name="line.275"></a>
+<span class="sourceLineNo">276</span>    public void combatDragon()<a name="line.276"></a>
+<span class="sourceLineNo">277</span>    {<a name="line.277"></a>
+<span class="sourceLineNo">278</span>        if(this.aPlayer.isMovingCharacter())<a name="line.278"></a>
+<span class="sourceLineNo">279</span>        {<a name="line.279"></a>
+<span class="sourceLineNo">280</span>            if(!aCombat)<a name="line.280"></a>
+<span class="sourceLineNo">281</span>            {<a name="line.281"></a>
+<span class="sourceLineNo">282</span>                this.aGui.combatInterface();<a name="line.282"></a>
+<span class="sourceLineNo">283</span>                this.setCombat(true);<a name="line.283"></a>
+<span class="sourceLineNo">284</span>            }<a name="line.284"></a>
+<span class="sourceLineNo">285</span>            this.aGui.showImage(aPlayer.getMovingCharacter().getImage());<a name="line.285"></a>
+<span class="sourceLineNo">286</span>        }<a name="line.286"></a>
+<span class="sourceLineNo">287</span>    }<a name="line.287"></a>
+<span class="sourceLineNo">288</span>    <a name="line.288"></a>
+<span class="sourceLineNo">289</span>    /**<a name="line.289"></a>
+<span class="sourceLineNo">290</span>     * Lancer le combat contre tout autre ennemi que le dragon.<a name="line.290"></a>
+<span class="sourceLineNo">291</span>     * @param pNPC Le NPC contre qui le Player se bat<a name="line.291"></a>
+<span class="sourceLineNo">292</span>     */<a name="line.292"></a>
+<span class="sourceLineNo">293</span>    public void demarrerCombat(final NPC pNPC)<a name="line.293"></a>
+<span class="sourceLineNo">294</span>    {<a name="line.294"></a>
+<span class="sourceLineNo">295</span>        this.aEnnemi = pNPC;<a name="line.295"></a>
+<span class="sourceLineNo">296</span>        this.aGui.combatInterface();<a name="line.296"></a>
+<span class="sourceLineNo">297</span>        this.setCombat(true);<a name="line.297"></a>
+<span class="sourceLineNo">298</span>        this.aGui.showImage(pNPC.getImage());<a name="line.298"></a>
+<span class="sourceLineNo">299</span>    }<a name="line.299"></a>
+<span class="sourceLineNo">300</span>    <a name="line.300"></a>
+<span class="sourceLineNo">301</span>    <a name="line.301"></a>
+<span class="sourceLineNo">302</span>    //touts les getters et setters<a name="line.302"></a>
+<span class="sourceLineNo">303</span>    /**<a name="line.303"></a>
+<span class="sourceLineNo">304</span>     * retourne le UserInterface.<a name="line.304"></a>
+<span class="sourceLineNo">305</span>     * @return Une UserInterface<a name="line.305"></a>
+<span class="sourceLineNo">306</span>     */<a name="line.306"></a>
+<span class="sourceLineNo">307</span>    public UserInterface getGUI()<a name="line.307"></a>
+<span class="sourceLineNo">308</span>    {<a name="line.308"></a>
+<span class="sourceLineNo">309</span>        return this.aGui;<a name="line.309"></a>
+<span class="sourceLineNo">310</span>    }<a name="line.310"></a>
+<span class="sourceLineNo">311</span>    <a name="line.311"></a>
+<span class="sourceLineNo">312</span>    /**<a name="line.312"></a>
+<span class="sourceLineNo">313</span>     * retourne le Parser.<a name="line.313"></a>
+<span class="sourceLineNo">314</span>     * @return Un Parser<a name="line.314"></a>
+<span class="sourceLineNo">315</span>     */<a name="line.315"></a>
+<span class="sourceLineNo">316</span>    public Parser getParser()<a name="line.316"></a>
+<span class="sourceLineNo">317</span>    {<a name="line.317"></a>
+<span class="sourceLineNo">318</span>        return this.aParser;<a name="line.318"></a>
+<span class="sourceLineNo">319</span>    }<a name="line.319"></a>
+<span class="sourceLineNo">320</span>    <a name="line.320"></a>
+<span class="sourceLineNo">321</span>    /**<a name="line.321"></a>
+<span class="sourceLineNo">322</span>     * retourne la Player.<a name="line.322"></a>
+<span class="sourceLineNo">323</span>     * @return Un Player<a name="line.323"></a>
+<span class="sourceLineNo">324</span>     */<a name="line.324"></a>
+<span class="sourceLineNo">325</span>    public Player getPlayer()<a name="line.325"></a>
+<span class="sourceLineNo">326</span>    {<a name="line.326"></a>
+<span class="sourceLineNo">327</span>        return this.aPlayer;<a name="line.327"></a>
+<span class="sourceLineNo">328</span>    }<a name="line.328"></a>
+<span class="sourceLineNo">329</span>    <a name="line.329"></a>
+<span class="sourceLineNo">330</span>    /**<a name="line.330"></a>
+<span class="sourceLineNo">331</span>     * retourne aTest. Permet de savoir si le jeu est en phase de test.<a name="line.331"></a>
+<span class="sourceLineNo">332</span>     * @return Un boolean<a name="line.332"></a>
+<span class="sourceLineNo">333</span>     */<a name="line.333"></a>
+<span class="sourceLineNo">334</span>    public boolean getTest()<a name="line.334"></a>
+<span class="sourceLineNo">335</span>    {<a name="line.335"></a>
+<span class="sourceLineNo">336</span>        return this.aTest;<a name="line.336"></a>
+<span class="sourceLineNo">337</span>    }<a name="line.337"></a>
+<span class="sourceLineNo">338</span>    <a name="line.338"></a>
+<span class="sourceLineNo">339</span>    /**<a name="line.339"></a>
+<span class="sourceLineNo">340</span>     * Permet de changer la valeur de aTest.<a name="line.340"></a>
+<span class="sourceLineNo">341</span>     * @param pTest Un boolean, la nouvelle valeur de aTest<a name="line.341"></a>
+<span class="sourceLineNo">342</span>     */<a name="line.342"></a>
+<span class="sourceLineNo">343</span>    public void setTest(final boolean pTest)<a name="line.343"></a>
+<span class="sourceLineNo">344</span>    {<a name="line.344"></a>
+<span class="sourceLineNo">345</span>        this.aTest = pTest;<a name="line.345"></a>
+<span class="sourceLineNo">346</span>    }<a name="line.346"></a>
+<span class="sourceLineNo">347</span>    <a name="line.347"></a>
+<span class="sourceLineNo">348</span>    /**<a name="line.348"></a>
+<span class="sourceLineNo">349</span>     * retourne la Map.<a name="line.349"></a>
+<span class="sourceLineNo">350</span>     * @return Une Map<a name="line.350"></a>
+<span class="sourceLineNo">351</span>     */<a name="line.351"></a>
+<span class="sourceLineNo">352</span>    public Map getMap()<a name="line.352"></a>
+<span class="sourceLineNo">353</span>    {<a name="line.353"></a>
+<span class="sourceLineNo">354</span>        return this.aMap;<a name="line.354"></a>
+<span class="sourceLineNo">355</span>    }<a name="line.355"></a>
+<span class="sourceLineNo">356</span>    <a name="line.356"></a>
+<span class="sourceLineNo">357</span>    /**<a name="line.357"></a>
+<span class="sourceLineNo">358</span>     * Permet de changer la valeur de aCombat.<a name="line.358"></a>
+<span class="sourceLineNo">359</span>     * @param pBoolean Un boolean, la nouvelle valeur de aCombat<a name="line.359"></a>
+<span class="sourceLineNo">360</span>     */<a name="line.360"></a>
+<span class="sourceLineNo">361</span>    public void setCombat(final boolean pBoolean)<a name="line.361"></a>
+<span class="sourceLineNo">362</span>    {<a name="line.362"></a>
+<span class="sourceLineNo">363</span>        this.aCombat = pBoolean;<a name="line.363"></a>
+<span class="sourceLineNo">364</span>    }<a name="line.364"></a>
+<span class="sourceLineNo">365</span>    <a name="line.365"></a>
+<span class="sourceLineNo">366</span>    /**<a name="line.366"></a>
+<span class="sourceLineNo">367</span>     * retourne aCombat<a name="line.367"></a>
+<span class="sourceLineNo">368</span>     * @return Un boolean<a name="line.368"></a>
+<span class="sourceLineNo">369</span>     */<a name="line.369"></a>
+<span class="sourceLineNo">370</span>    public boolean combat()<a name="line.370"></a>
+<span class="sourceLineNo">371</span>    {<a name="line.371"></a>
+<span class="sourceLineNo">372</span>        return this.aCombat;<a name="line.372"></a>
+<span class="sourceLineNo">373</span>    }<a name="line.373"></a>
+<span class="sourceLineNo">374</span>    <a name="line.374"></a>
+<span class="sourceLineNo">375</span>    /**<a name="line.375"></a>
+<span class="sourceLineNo">376</span>     * Permet d'obtenir le NPC que l'on combat.<a name="line.376"></a>
+<span class="sourceLineNo">377</span>     * @return Un NPC<a name="line.377"></a>
+<span class="sourceLineNo">378</span>     */<a name="line.378"></a>
+<span class="sourceLineNo">379</span>    public NPC getEnnemi()<a name="line.379"></a>
+<span class="sourceLineNo">380</span>    {<a name="line.380"></a>
+<span class="sourceLineNo">381</span>        return this.aEnnemi;<a name="line.381"></a>
+<span class="sourceLineNo">382</span>    }<a name="line.382"></a>
+<span class="sourceLineNo">383</span>    <a name="line.383"></a>
+<span class="sourceLineNo">384</span>    /**<a name="line.384"></a>
+<span class="sourceLineNo">385</span>     * Permet de supprimer le NPC que l'on combat ((une fois le combat gagne)<a name="line.385"></a>
+<span class="sourceLineNo">386</span>     */<a name="line.386"></a>
+<span class="sourceLineNo">387</span>    public void removeEnnemi()<a name="line.387"></a>
+<span class="sourceLineNo">388</span>    {<a name="line.388"></a>
+<span class="sourceLineNo">389</span>        this.aEnnemi = null;<a name="line.389"></a>
+<span class="sourceLineNo">390</span>    }<a name="line.390"></a>
+<span class="sourceLineNo">391</span>  <a name="line.391"></a>
+<span class="sourceLineNo">392</span>    <a name="line.392"></a>
+<span class="sourceLineNo">393</span>    //Finir le jeu<a name="line.393"></a>
+<span class="sourceLineNo">394</span>    /**<a name="line.394"></a>
+<span class="sourceLineNo">395</span>     * verifie si le Player a plus de 0 PV (CaD qu'il est en vie)<a name="line.395"></a>
+<span class="sourceLineNo">396</span>     * Sinon, tue le Player.<a name="line.396"></a>
+<span class="sourceLineNo">397</span>     */<a name="line.397"></a>
+<span class="sourceLineNo">398</span>    public void zeroPV()<a name="line.398"></a>
+<span class="sourceLineNo">399</span>    {<a name="line.399"></a>
+<span class="sourceLineNo">400</span>        if(this.aPlayer.getPV()&lt;= 0 )<a name="line.400"></a>
+<span class="sourceLineNo">401</span>            this.death("Your ennemy was too powerful. You died while fighting him.");<a name="line.401"></a>
+<span class="sourceLineNo">402</span>    }<a name="line.402"></a>
+<span class="sourceLineNo">403</span>    <a name="line.403"></a>
+<span class="sourceLineNo">404</span>    /**<a name="line.404"></a>
+<span class="sourceLineNo">405</span>     * Message de mort et image affiche si le joueur meurt pendant son combat contre le dragon.<a name="line.405"></a>
+<span class="sourceLineNo">406</span>     */<a name="line.406"></a>
+<span class="sourceLineNo">407</span>    public void deathByDragon()<a name="line.407"></a>
+<span class="sourceLineNo">408</span>    {<a name="line.408"></a>
+<span class="sourceLineNo">409</span>        this.aGui.println("The Dragon roasted you to death.");<a name="line.409"></a>
+<span class="sourceLineNo">410</span>        this.aGui.showImage( "Images/DeathDragon.jpg");<a name="line.410"></a>
+<span class="sourceLineNo">411</span>        this.aGui.enable(false);<a name="line.411"></a>
+<span class="sourceLineNo">412</span>    }<a name="line.412"></a>
+<span class="sourceLineNo">413</span>    <a name="line.413"></a>
+<span class="sourceLineNo">414</span>    /**<a name="line.414"></a>
+<span class="sourceLineNo">415</span>     * Permet d'arreter le jeu avec un message de mort.<a name="line.415"></a>
+<span class="sourceLineNo">416</span>     * Affiche une image "Game Over".<a name="line.416"></a>
+<span class="sourceLineNo">417</span>     * @param pMessage Le message que l'on veut afficher<a name="line.417"></a>
+<span class="sourceLineNo">418</span>     */<a name="line.418"></a>
+<span class="sourceLineNo">419</span>    public void death(final String pMessage)<a name="line.419"></a>
+<span class="sourceLineNo">420</span>    {<a name="line.420"></a>
+<span class="sourceLineNo">421</span>        this.aGui.println(pMessage);<a name="line.421"></a>
+<span class="sourceLineNo">422</span>        this.aGui.showImage( "Images/Game Over.jpg");<a name="line.422"></a>
+<span class="sourceLineNo">423</span>        this.aGui.enable(false);<a name="line.423"></a>
+<span class="sourceLineNo">424</span>    }<a name="line.424"></a>
+<span class="sourceLineNo">425</span>    <a name="line.425"></a>
+<span class="sourceLineNo">426</span>    /**<a name="line.426"></a>
+<span class="sourceLineNo">427</span>     * Permet d'arreter le jeu avec un message de victoire.<a name="line.427"></a>
+<span class="sourceLineNo">428</span>     * Affiche une image "Win".<a name="line.428"></a>
+<span class="sourceLineNo">429</span>     */<a name="line.429"></a>
+<span class="sourceLineNo">430</span>    public void endGameWin()<a name="line.430"></a>
+<span class="sourceLineNo">431</span>    {<a name="line.431"></a>
+<span class="sourceLineNo">432</span>        this.aGui.println("\n  You are now rich and well known. \n  You have whatever you wanted to have. \n  \n  Thanks for playing.");<a name="line.432"></a>
+<span class="sourceLineNo">433</span>        this.aGui.showImage( "Images/Win.jpg");<a name="line.433"></a>
+<span class="sourceLineNo">434</span>        this.aGui.enable(false);<a name="line.434"></a>
+<span class="sourceLineNo">435</span>    }<a name="line.435"></a>
+<span class="sourceLineNo">436</span>    <a name="line.436"></a>
+<span class="sourceLineNo">437</span>}<a name="line.437"></a>
+<span class="sourceLineNo">438</span><a name="line.438"></a>
+<span class="sourceLineNo">439</span><a name="line.439"></a>
+<span class="sourceLineNo">440</span><a name="line.440"></a>
+<span class="sourceLineNo">441</span><a name="line.441"></a>
+<span class="sourceLineNo">442</span><a name="line.442"></a>
+<span class="sourceLineNo">443</span><a name="line.443"></a>
+<span class="sourceLineNo">444</span><a name="line.444"></a>
+<span class="sourceLineNo">445</span><a name="line.445"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>
