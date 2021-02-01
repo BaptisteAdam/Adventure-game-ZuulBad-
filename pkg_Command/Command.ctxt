@@ -1,0 +1,18 @@
+#BlueJ class context
+comment0.target=Command
+comment1.params=
+comment1.target=Command()
+comment1.text=\r\n\ Constructeur,\ cree\ une\ nouvelle\ commande.\r\n
+comment2.params=
+comment2.target=java.lang.String\ getSecondWord()
+comment2.text=\r\n\ Permet\ d'obtenir\ la\ chaine\ de\ caracteres\ de\ "this.aSecondWord".\r\n\ @return\ Retourne\ le\ second\ mot\ de\ la\ commande.\r\n
+comment3.params=pSecondWord
+comment3.target=void\ setSecondWord(java.lang.String)
+comment3.text=\r\n\ D\u00E9finie\ le\ second\ de\ la\ commande.\ \r\n\ null\ si\ il\ n'y\ en\ a\ pas.\r\n\ @param\ pSecondWord\ Le\ second\ mot\ de\ la\ commande\r\n
+comment4.params=
+comment4.target=boolean\ hasSecondWord()
+comment4.text=\r\n\ Permet\ de\ savoir\ si\ il\ y\ a\ un\ second\ mot\ (dans\ "this.aSecondWord".).\r\n\ @return\ true\ ou\ false\ \r\n
+comment5.params=pGameEngine
+comment5.target=void\ execute(pkg_Engine.GameEngine)
+comment5.text=\r\n\ Execute\ la\ commande.\ \r\n\ @param\ pGameEngine\ Le\ gameEngine\ gerant\ le\ jeu\r\n\ \r\n
+numComments=6

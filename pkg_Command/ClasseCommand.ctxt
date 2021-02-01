@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=ClasseCommand
+comment0.text=\r\n\ La\ commande\ permettant\ de\ choisir\ sa\ classe.\r\n\ \r\n\ @author\ Michael\ Kolling\ and\ David\ J.\ Barnes\r\n\ @version\ 2011.07.31\r\n
+comment1.params=words
+comment1.target=ClasseCommand(CommandWords)
+comment1.text=\r\n\ Constructeur,\ cree\ une\ nouvelle\ ClasseCommand.\r\n\ @param\ words\ Le\ CommandWords\ correspondant\r\n
+comment2.params=pGameEngine
+comment2.target=void\ execute(pkg_Engine.GameEngine)
+comment2.text=\r\n\ Execute\ la\ commande\ de\ choix\ de\ la\ classe.\r\n\ @param\ pGameEngine\ Le\ GameEngine\ faisant\ l'action\r\n
+numComments=3

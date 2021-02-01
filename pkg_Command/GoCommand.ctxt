@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=GoCommand
+comment0.text=\r\n\ La\ commande\ permettant\ de\ se\ deplacer.\r\n\ \r\n\ @author\ Michael\ Kolling\ and\ David\ J.\ Barnes\r\n\ @version\ 2011.07.31\r\n
+comment1.params=words
+comment1.target=GoCommand(CommandWords)
+comment1.text=\r\n\ Constructeur,\ cree\ une\ nouvelle\ GoCommand.\r\n\ @param\ words\ Le\ CommandWords\ correspondant\r\n
+comment2.params=pGameEngine
+comment2.target=void\ execute(pkg_Engine.GameEngine)
+comment2.text=\r\n\ Execute\ la\ commande\ Go.\r\n\ @param\ pGameEngine\ Le\ GameEngine\ faisant\ l'action\r\n
+comment3.params=pGameEngine\ pType
+comment3.target=void\ goRandom(pkg_Engine.GameEngine,\ int)
+comment3.text=\r\n\ Avance\ dans\ une\ direction\ au\ hasard\ jusqu'a\ ce\ que\r\n\ l'on\ soit\ dans\ la\ salle\ dont\ le\ type\ est\ passe\ en\ parametre.\r\n\ N'A\ DE\ VOCATION\ A\ ETRE\ UTILISE\ QUE\ POUR\ UN\ TEST\r\n\ @param\ pGameEngine\ Le\ GameEngine\ qui\ execute\ l'action\r\n\ @param\ pType\ Le\ type\ de\ la\ Room\ dans\ laquelle\ on\ veux\ aller.\r\n
+comment4.params=pGameEngine
+comment4.target=void\ moveNPC(pkg_Engine.GameEngine)
+comment4.text=\r\n\ Permet\ de\ deplacer\ le\ MovingCharacter.\r\n\ (tant\ qu'il\ n'a\ pas\ change\ de\ salle,\ on\ recommence\ l'action)\r\n\ @param\ pGameEngine\ Le\ GameEngine\ executant\ l'action.\r\n
+numComments=5
