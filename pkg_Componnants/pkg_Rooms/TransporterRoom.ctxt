@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=TransporterRoom
+comment0.text=\r\n\ TransporterRoom\ est\ une\ Room\ qui\ teleporte\ le\ Player\ aleatoirement\ sur\ la\ map\r\n\ lorsqu'on\ essaye\ d'en\ sortir.\r\n\r\n\ @author\ Baptiste\ ADAM\r\n\ @version\ v2\ -\ 30/05/2017\r\n
+comment1.params=pDescription\ pImage\ pTypeRoom\ pAllRooms
+comment1.target=TransporterRoom(java.lang.String,\ java.lang.String,\ int,\ java.util.ArrayList)
+comment1.text=\r\n\ Constructeur,\ cree\ une\ nouvelle\ TransporterRoom\r\n\ @param\ pDescription\ La\ description\ de\ la\ TransporterRoom\r\n\ @param\ pImage\ L'adresse\ de\ l'image\ de\ la\ TransporterRoom\r\n\ @param\ pTypeRoom\ Le\ type\ de\ la\ Room\r\n\ @param\ pAllRooms\ L'arrayList\ des\ Rooms\ ou\ l'on\ peux\ se\ teleporter\r\n
+comment2.params=pDirection
+comment2.target=Room\ getExit(java.lang.String)
+comment2.text=\r\n\ Retourne\ une\ Room\ al\u00E9atoirement\ parmis\ toutes\ celles\ disponibles.\r\n\ @param\ pDirection\ La\ direction\ dans\ laquelle\ on\ va\ (ne\ sers\ a\ rien)\r\n\ @return\ Une\ Room\ aleatoire.\r\n
+comment3.params=
+comment3.target=RoomRandomizer\ getRoomRandomizer()
+comment3.text=\r\n\ Retourne\ aRoomRandomizer.\r\n\ @return\ Le\ RoomRandomizer\r\n
+numComments=4

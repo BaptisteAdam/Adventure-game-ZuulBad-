@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=Item
+comment1.params=pDescription\ pWeight\ pMotclef
+comment1.target=Item(java.lang.String,\ double,\ java.lang.String)
+comment1.text=\r\n\ Constructeur,\ cree\ un\ nouveau\ Item.\r\n\ @param\ pDescription\ La\ description\ de\ l'item.\r\n\ @param\ pWeight\ Le\ poids\ de\ l'item.\r\n\ @param\ pMotclef\ Le\ motclef\ de\ l'item.\r\n
+comment2.params=
+comment2.target=java.lang.String\ getDescription()
+comment2.text=\r\n\ Retourne\ la\ description\ de\ l'item.\r\n\ @return\ La\ description\ de\ l'item.\r\n
+comment3.params=
+comment3.target=double\ getWeight()
+comment3.text=\r\n\ Retourne\ le\ poids\ de\ l'item.\r\n\ @return\ Le\ poids\ de\ l'item.\r\n
+comment4.params=
+comment4.target=java.lang.String\ getMotclef()
+comment4.text=\r\n\ Retourne\ le\ motclef\ de\ l'item.\r\n\ @return\ Le\ motclef\ de\ l'item.\r\n
+numComments=5

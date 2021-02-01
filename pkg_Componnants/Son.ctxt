@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=Son
+comment1.params=pString
+comment1.target=Son(java.lang.String)
+comment2.params=
+comment2.target=void\ jouer()
+comment3.params=
+comment3.target=void\ jouerEnBoucle()
+comment4.params=
+comment4.target=void\ arreter()
+comment5.params=pString
+comment5.target=void\ JouerLeSon(java.lang.String)
+numComments=6

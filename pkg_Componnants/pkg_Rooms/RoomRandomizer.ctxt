@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=RoomRandomizer
+comment0.text=\r\n\ Permet\ de\ selectionner\ une\ Room\ aleatoirement\ dans\ une\ ArrayList\ de\ Room.\r\n\r\n\ @author\ Baptiste\ ADAM\r\n\ @version\ v2\ -\ 30/05/2017\r\n
+comment1.params=pAllRooms
+comment1.target=RoomRandomizer(java.util.ArrayList)
+comment1.text=\r\n\ Constructeur,\ cree\ un\ nouveau\ RoomRandomizer.\r\n\ @param\ pAllRooms\ Une\ ArrayList\ de\ Room\r\n
+comment2.params=pB
+comment2.target=void\ setIndiceRoom(boolean)
+comment2.text=\r\n\ Permet\ de\ set\ IndiceRoom\ sur\ null\ ou\ 0.\r\n\ @param\ pB\ Un\ booleen\ \:\ true\ met\ IndiceRoom\ a\ 0\ (desactive\ le\ random)\r\n
+comment3.params=
+comment3.target=Room\ getRandomRoom()
+comment3.text=\r\n\ Renvois\ une\ Room\ aleatoirement.\r\n\ @return\ Une\ Room\ de\ l'ArrayList\r\n
+numComments=4

@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=MovingCharacter
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ MovingCharacter\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=pNom\ pImage\ pDialogue\ pRace\ pJob\ pItem\ pRoom
+comment1.target=MovingCharacter(java.lang.String,\ java.lang.String,\ java.lang.String[],\ java.lang.String,\ java.lang.String,\ pkg_Componnants.pkg_Items.Item,\ Room)
+comment1.text=\r\n\ Constructeur,\ cree\ un\ nouveau\ MovingCharacter.\r\n\ @param\ pNom\ Une\ String,\ Le\ nom\ du\ NPC\r\n\ @param\ pImage\ Une\ String,\ L'image\ du\ NPC\r\n\ @param\ pDialogue\ Un\ tableau\ de\ String,\ Les\ phrases\ que\ prononce\ le\ NPC\r\n\ @param\ pRace\ Une\ String,\ La\ race\ du\ NPC\r\n\ @param\ pJob\ Une\ String,\ La\ classe\ du\ NPC\r\n\ @param\ pItem\ L'item\ que\ le\ NPC\ porte\r\n\ @param\ pRoom\ La\ Room\ dans\ laquelle\ il\ est\ cree\r\n
+comment2.params=pDirection
+comment2.target=boolean\ move(java.lang.String)
+comment2.text=\r\n\ Permet\ de\ deplacer\ le\ MovingCharacter.\r\n\ @param\ pDirection\ Une\ String,\ la\ direction\ dans\ laquelle\ il\ se\ deplace\r\n\ @return\ Un\ boolean\ true\ s'il\ s'est\ deplace,\ false\ sinon\r\n
+comment3.params=
+comment3.target=Room\ getCurrentRoom()
+comment3.text=\r\n\ retourne\ la\ CurrentRoom\ du\ NPC\r\n\ @return\ Une\ Room\r\n
+numComments=4

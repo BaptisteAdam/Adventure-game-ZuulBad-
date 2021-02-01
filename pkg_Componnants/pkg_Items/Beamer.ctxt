@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=Beamer
+comment0.text=\r\n\ Un\ Beamer\ est\ un\ item\ capable\ de\ teleporter\ le\ joueur\ dans\ la\ salle\ dans\ laquelle\ il\ a\ ete\ charge\ auparavant.\r\n\r\n\ @author\ Baptiste\ Adam\r\n\ @version\ v1\ -\ 5/23/2017\r\n
+comment1.params=
+comment1.target=Beamer()
+comment1.text=\r\n\ constructeur,\ cree\ un\ nouveau\ beamer\ (non\ charg\u00E9)\r\n
+comment2.params=
+comment2.target=Room\ getChargedRoom()
+comment2.text=\r\n\ permet\ d'obtenir\ aCargedRoom,\ \r\n\ si\ elle\ est\ null,\ c'est\ que\ le\ beamer\ n'est\ pas\ charge.\r\n\ @return\ la\ Room\ dans\ laquelle\ le\ beamer\ a\ ete\ charge.\ \r\n
+comment3.params=pRoom
+comment3.target=void\ setChargedRoom(Room)
+comment3.text=\r\n\ permet\ de\ modifier\ la\ valeur\ de\ aChargedRoom\r\n\ @param\ pRoom\ La\ Room\ dans\ laquelle\ le\ beamer\ est\ charge.\r\n
+numComments=4
