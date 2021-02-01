@@ -1,0 +1,10 @@
+race human
+job warrior
+take glg
+take branch
+look
+inventory
+drop glg
+drop branch
+look
+inventory

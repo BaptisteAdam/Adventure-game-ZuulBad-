@@ -1,0 +1,4 @@
+race human
+job warrior
+go gdkfjbfsdl
+take Statuette

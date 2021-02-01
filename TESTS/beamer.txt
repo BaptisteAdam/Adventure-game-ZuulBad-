@@ -1,0 +1,11 @@
+race human
+job warrior
+orb fire
+orb charge
+orb hrthgrtlgh
+orb fire
+orb charge
+go north
+orb fire
+drop orb 
+take orb 

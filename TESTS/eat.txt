@@ -1,0 +1,16 @@
+race human
+job warrior
+take branch
+go zonclsdcndsjkl
+eat cookie
+eat steak
+eat mushroom
+take cookie
+take steak
+take mushroom
+eat branch
+inventory
+eat cookie
+eat steak
+eat mushroom
+inventory
